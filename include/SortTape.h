@@ -40,6 +40,7 @@ SortTape::SortTape(int number_count, int RAM_size, Tape* inputTape, Tape* output
     }
 }
 
+// Основной алгоритм сортировки и записи 
 void SortTape::startSort() {
 
     writeAdditionalData();
@@ -65,10 +66,6 @@ void SortTape::writeAdditionalData() {
                 k = 1;
             }
         }
-
-        //for (int i : RAM) {
-        //    cout << i;
-        //}
 
         descRAMSort();
 
@@ -100,6 +97,7 @@ void SortTape::descRAMSort() {
     }
 }
 
+// Запись данных на выходную ленту
 void SortTape::writeOutputTapeData() {
 
     for (int i = 0; i < RAM_size; i++) {
@@ -119,7 +117,6 @@ void SortTape::writeOutputTapeData() {
                 output_tape->writeNum(RAM[i]);
                 output_tape->incCurIndex();
 
-
                 RAM[i] = MAX_INT;
                 additional_tape[index[i]]->decCurIndex();
             }
@@ -127,6 +124,7 @@ void SortTape::writeOutputTapeData() {
     }
 }
 
+// Находим минимальные значения на доп лентах, записываем их в ОЗУ, декремнтируем указатели 
 void SortTape::checkMin(int tape_idx, int RAM_idx, vector<int>* vector_idx) {
 
     if (additional_tape[tape_idx]->getCurIndex() == -1)
@@ -153,6 +151,7 @@ void SortTape::checkMin(int tape_idx, int RAM_idx, vector<int>* vector_idx) {
     }
 }
 
+// Вывод задержек на всех лентах
 void SortTape::printAllDelay() {
     int total_delay = 0;
 
@@ -169,6 +168,8 @@ void SortTape::printAllDelay() {
     cout << "TOTAL DELAY: " << total_delay << endl;
 }
 
+
+// Удаляем все доп ленты 
 SortTape::~SortTape() {
     for (Tape* tape : additional_tape) {
         tape->clearFile();
