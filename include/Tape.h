@@ -7,7 +7,7 @@ using namespace std;
 class Tape
 {
 public:
-	Tape(int size, string input_data_path, int del_rd, int del_wr, int del_idx, int del_inc);
+	Tape(int size, string input_data_path, int del_rd_wr, int del_rewind, int del_inc_dec);
 	void debug();
 	void writeNum(int num);
 	void setCurIndex(int idx);
@@ -20,20 +20,19 @@ public:
 	int getTotalDelay();
 
 private:
-	int size = 0, cur_index = 0, del_inc = 0, del_rd = 0, del_wr = 0, del_idx = 0, del_total = 0;
+	int size = 0, cur_index = 0, del_inc_dec = 0, del_rd_wr = 0, del_rewind = 0, del_total = 0;
 	string storage_path;
 	void writeToFile(int num);
 
 };
 
-Tape::Tape(int size, string input_data_path, int del_rd, int del_wr, int del_idx, int del_inc)
+Tape::Tape(int size, string input_data_path, int del_rd_wr, int del_rewind, int del_inc_dec)
 {
 	this->size = size;
 	this->storage_path = input_data_path;
-	this->del_rd = del_rd;
-	this->del_wr = del_wr;
-	this->del_idx = del_idx;
-	this->del_inc = del_inc;
+	this->del_rd_wr = del_rd_wr;
+	this->del_rewind = del_rewind;
+	this->del_inc_dec = del_inc_dec;
 }
 
 void Tape::debug() {
@@ -46,7 +45,7 @@ void Tape::writeNum(int num) {
 }
 
 void Tape::writeToFile(int num) {
-	del_total += del_wr;
+	del_total += del_rd_wr;
 	ofstream fout(storage_path, ios_base::app);
 	fout << num << endl;
 }
@@ -56,18 +55,18 @@ int Tape::getCurIndex() {
 }
 
 void Tape::incCurIndex() {
-	del_total += del_inc;
+	del_total += del_inc_dec;
 	if (cur_index + 1 != size)
 		cur_index++;
 }
 
 void Tape::decCurIndex() {
-	del_total += del_inc;
+	del_total += del_inc_dec;
 	cur_index--;
 }
 
 int Tape::getCurNum() {
-	del_total += del_rd;
+	del_total += del_rd_wr;
 	int cur_num = 0;
 	ifstream fin(storage_path);
 	for (size_t i = 0; i < size; i++){
@@ -79,7 +78,7 @@ int Tape::getCurNum() {
 }
 
 void Tape::setCurIndex(int idx) {
-	del_total += del_idx;
+	del_total += del_rewind;
 	this->cur_index = idx;
 }
 

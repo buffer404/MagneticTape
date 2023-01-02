@@ -9,7 +9,7 @@ using namespace std;
 class SortTape
 {
 public:
-    SortTape(int number_count, int RAM_size, Tape* inputTape, Tape* outputTape, int del_rd, int del_wr, int del_idx, int del_inc);
+    SortTape(int number_count, int RAM_size, Tape* inputTape, Tape* outputTape, int del_rd_wr, int del_rewind, int del_inc_dec);
     ~SortTape();
     void startSort();
     void printAllDelay();
@@ -25,7 +25,7 @@ private:
     void checkMin(int tape_idx, int RAM_idx, vector<int>* vector_idx);
 };
 
-SortTape::SortTape(int number_count, int RAM_size, Tape* inputTape, Tape* outputTape, int del_rd, int del_wr, int del_idx, int del_inc)
+SortTape::SortTape(int number_count, int RAM_size, Tape* inputTape, Tape* outputTape, int del_rd_wr, int del_rewind, int del_inc_dec)
 {
     this->number_count = number_count;
     this->RAM_size = RAM_size;
@@ -35,7 +35,7 @@ SortTape::SortTape(int number_count, int RAM_size, Tape* inputTape, Tape* output
     this->additional_tape_count = (number_count - 1) / RAM_size + 1;
 
     for (int i = 0; i < additional_tape_count; i++){
-        Tape* tape = new Tape(RAM_size, TMP_DIR_PATH + to_string(i), del_rd, del_wr, del_idx, del_inc);
+        Tape* tape = new Tape(RAM_size, TMP_DIR_PATH + to_string(i), del_rd_wr, del_rewind, del_inc_dec);
         additional_tape.push_back(tape);
     }
 }
